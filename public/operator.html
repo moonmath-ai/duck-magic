@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Duck Magic · Operator</title>
+  <link rel="icon" type="image/png" href="/duck-wizard-favicon.png?v=1">
+  <style>
+    :root{font-family:system-ui,-apple-system,sans-serif;color:#172a38;background:#f5f7f6}*{box-sizing:border-box}body{margin:0}button,input{font:inherit}header{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:17px clamp(16px,4vw,48px);border-bottom:2px solid #d9e0dc;background:#fff}header strong{font-size:18px}header a{color:#225bb4;text-decoration:none;font-size:13px}main{width:min(1100px,100%);margin:auto;padding:28px 16px 60px}.eyebrow{color:#39719b;font:700 10px ui-monospace,monospace;letter-spacing:.15em}h1{margin:5px 0 6px;font-size:clamp(26px,4vw,42px);letter-spacing:-.06em}p{color:#627987;line-height:1.45}.login{max-width:480px;margin:35px auto;padding:24px;border:2px solid #172a38;border-radius:11px;background:#fff;box-shadow:5px 5px 0 #e8c75a}.login h2{margin:0 0 6px}.login label{display:block;margin:20px 0 7px;font-size:12px;font-weight:700}.login input{width:100%;padding:13px;border:1.5px solid #aac0cd;border-radius:7px}.login button,.refresh{min-height:44px;padding:8px 16px;border:2px solid #15447e;border-radius:7px;background:#225bb4;color:#fff;font-weight:700;cursor:pointer}.login button{width:100%;margin-top:12px}.error{color:#a62c37!important;font-weight:700}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:20px 0}.toolbar p{margin:0;font-size:12px}.refresh{min-height:36px;font-size:12px}.section-title{margin:25px 0 10px;font-size:12px;letter-spacing:.13em;color:#447595;text-transform:uppercase}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.card{min-width:0;padding:15px;border:1.5px solid #d3e0e5;border-radius:9px;background:#fff}.card span{display:block;color:#668093;font:10px/1.3 ui-monospace,monospace;text-transform:uppercase;letter-spacing:.05em}.card strong{display:block;margin-top:9px;font-size:clamp(19px,3vw,28px);letter-spacing:-.04em;overflow-wrap:anywhere}.card small{display:block;margin-top:5px;color:#7d919c;font-size:11px}.card.cost{background:#fffbec;border-color:#e6cd87}.card.cost strong{color:#976a16}.card.blue{background:#f1f6ff;border-color:#bcd0f0}.note{margin-top:18px;padding:14px;border-left:3px solid #dda838;background:#fffbec;font-size:12px}.hidden{display:none!important}@media(max-width:800px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:430px){main{padding:18px 10px 40px}.grid{gap:7px}.card{padding:10px}.card strong{font-size:18px}}
+    .toolbar-actions{display:flex;gap:8px}.new-event{min-height:36px;padding:8px 13px;border:2px solid #a64a38;border-radius:7px;background:#fff6f2;color:#8d3426;font-size:12px;font-weight:700;cursor:pointer}.event-dialog{width:min(440px,calc(100vw - 24px));padding:24px;border:2px solid #172a38;border-radius:11px;box-shadow:7px 7px 0 #e8c75a}.event-dialog::backdrop{background:#172a38a8}.event-dialog h2{margin:0 0 7px}.event-dialog label{display:block;margin:20px 0 7px;font-size:12px;font-weight:700}.event-dialog input{width:100%;padding:12px;border:1.5px solid #aac0cd;border-radius:7px}.event-dialog-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}.event-dialog-actions button{min-height:42px;padding:8px 13px;border-radius:7px;font-weight:700;cursor:pointer}.event-dialog-actions .cancel{border:1.5px solid #aac0cd;background:#fff}.event-dialog-actions .confirm{border:2px solid #a64a38;background:#a6362a;color:#fff}.event-dialog-actions .confirm:disabled{opacity:.5;cursor:not-allowed}.archive-note{background:#eef6fc;border-left-color:#39719b}.claim-check{margin-top:30px;padding:18px;border:2px solid #bfd0dc;border-radius:9px;background:#fff}.claim-check h2{margin:0 0 4px}.claim-check p{margin:4px 0 12px}.claim-check form{display:flex;gap:8px}.claim-check input{flex:1;min-width:0;padding:10px;border:1.5px solid #aac0cd;border-radius:6px;font:12px ui-monospace,monospace}.claim-check button{border:0;border-radius:6px;background:#225bb4;color:#fff;padding:10px 15px;font-weight:700;cursor:pointer}.claim-check button:disabled{opacity:.6;cursor:wait}.claim-check button[hidden]{display:none}.claim-check #redeem-claim{margin-top:11px;background:#26724a}.claim-check output{display:block;margin-top:10px;font-size:13px;font-weight:700}.claim-check output[data-redeemed="true"]{color:#a6362a}.claim-check output[data-redeemed="false"]{color:#26724a}@media(max-width:560px){.claim-check form{flex-direction:column}}
+  </style>
+</head>
+<body>
+  <header><strong>DUCK MAGIC · OPERATOR</strong><a href="/">← Game</a></header>
+  <main>
+    <span class="eyebrow">PRIVATE · CONTENT-FREE ANALYTICS</span>
+    <h1>Under the hood.</h1>
+    <p>Game activity and inference usage, without player counterspells or conversation text.</p>
+    <form id="login" class="login">
+      <h2>Operator access</h2><p>Enter the separate operator token. It stays only in this tab’s memory.</p>
+      <label for="token">OPERATOR TOKEN</label><input id="token" type="password" autocomplete="off" required>
+      <button type="submit">Open dashboard →</button><p id="login-error" class="error" role="alert"></p>
+    </form>
+    <div id="dashboard" class="hidden">
+      <div class="toolbar"><p id="updated">Loading…</p><div class="toolbar-actions"><button id="refresh" class="refresh" type="button">↻ Refresh</button><button id="new-event" class="new-event" type="button">+ New event</button></div></div>
+      <h2 id="event-heading" class="section-title">Event 1 · gameplay</h2>
+      <div class="grid">
+        <div class="card blue"><span>Players online</span><strong id="online">—</strong><small>Visible tabs seen in last 90 seconds</small></div>
+        <div class="card"><span>Unique visitors</span><strong id="visitors">—</strong><small>First-party browser IDs, not people</small></div>
+        <div class="card"><span>Unique players</span><strong id="unique-players">—</strong><small>Browsers with a completed counter</small></div>
+        <div class="card"><span>Unique winners</span><strong id="unique-winners">—</strong><small>Browsers that defeated the duck</small></div>
+        <div class="card blue"><span>Duels played</span><strong id="played">—</strong><small>At least one completed counter</small></div>
+        <div class="card"><span>Completed rounds</span><strong id="rounds">—</strong></div>
+        <div class="card"><span>Duck defeated</span><strong id="wins">—</strong><small>Player wins</small></div>
+        <div class="card"><span>Duck won / draws</span><strong id="losses">—</strong></div>
+        <div class="card"><span>Win rate</span><strong id="win-rate">—</strong><small>Player wins / finished duels</small></div>
+        <div class="card"><span>Stored sessions</span><strong id="sessions">—</strong><small>Last 2 hours, not unique people</small></div>
+        <div class="card"><span>Sessions with moves</span><strong id="active-sessions">—</strong><small>Among stored sessions</small></div>
+        <div class="card"><span>Finished duels</span><strong id="finished">—</strong></div>
+        <div class="card"><span>Model</span><strong id="model">—</strong></div>
+      </div>
+      <h2 class="section-title">Inference · both duck and referee calls</h2>
+      <div class="grid">
+        <div class="card cost"><span>Known estimated inference spend</span><strong id="cost">—</strong><small id="cost-usd">—</small></div>
+        <div class="card"><span>Model requests</span><strong id="calls">—</strong><small id="call-kinds">—</small></div>
+        <div class="card"><span>Total tokens</span><strong id="total-tokens">—</strong><small>Known input + output</small></div>
+        <div class="card"><span>Input / output tokens</span><strong id="tokens">—</strong></div>
+        <div class="card"><span>Cache-read tokens</span><strong id="cached">—</strong></div>
+        <div class="card"><span>Average response</span><strong id="response">—</strong><small>Full non-streaming call</small></div>
+        <div class="card"><span>Calls in flight</span><strong id="in-flight">—</strong></div>
+        <div class="card"><span>Failed requests</span><strong id="failures">—</strong></div>
+        <div class="card"><span>Malformed model replies</span><strong id="malformed">—</strong><small>Includes first attempts recovered by retry</small></div>
+        <div class="card"><span>Unknown usage</span><strong id="unknown">—</strong><small>Not counted as free</small></div>
+        <div class="card"><span>Budget guard used</span><strong id="guard-spent">—</strong><small>Conservative on failed/unknown calls</small></div>
+        <div class="card"><span>Budget guard limit</span><strong id="guard-limit">—</strong><small>Not a provider billing cap</small></div>
+      </div>
+      <p class="note">These totals start with the current event. Unique-browser tracking began <span id="unique-since">with this event</span>; earlier visitors cannot be reconstructed. Clearing cookies or switching devices counts as a new browser. No counterspell text is kept in analytics. Failed model replies and retries count as requests and cost when usage is reported. The guard may exceed known inference cost when usage is unknown.</p>
+      <p id="previous-event" class="note archive-note hidden"></p>
+      <section class="claim-check"><h2>Verify a reward email</h2><p>Paste the reference from the player's email. Checking does not use the claim; mark it redeemed only after you send the reward.</p><form id="claim-form"><input id="claim-reference" aria-label="Claim reference" placeholder="DM-1-…" autocomplete="off" spellcheck="false" required><button type="submit">Verify claim</button></form><output id="claim-result" aria-live="polite"></output><button id="redeem-claim" type="button" hidden>Mark as redeemed</button></section>
+    </div>
+    <dialog id="event-dialog" class="event-dialog" aria-labelledby="event-dialog-title">
+      <h2 id="event-dialog-title">Start a new event?</h2>
+      <p>This archives the current event, resets event counters, active duels and the $2 inference allowance, and starts every active player with a fresh duel. Previous spending is <strong>not refunded</strong>.</p>
+      <form id="event-form"><label for="event-confirmation">Type NEW EVENT to confirm</label><input id="event-confirmation" autocomplete="off" spellcheck="false" required><p id="event-error" class="error" role="alert"></p><div class="event-dialog-actions"><button id="event-cancel" class="cancel" type="button">Cancel</button><button id="event-submit" class="confirm" type="submit">Start new event</button></div></form>
+    </dialog>
+  </main>
+  <script>
+    let operatorToken='';
+    let currentEventNumber=1;
+    let verifiedClaimReference='';
+    const el=id=>document.getElementById(id);
+    const trial=new URLSearchParams(location.search).get('qwen')==='1';
+    const apiPath=path=>trial?path+(path.includes('?')?'&':'?')+'qwen=1':path;
+    if(trial){document.title='Duck Magic Operator — Qwen';document.querySelector('.card.cost span').textContent='Provider cost unavailable';document.querySelector('.note').append(document.createTextNode(' Tenstorrent Qwen prices are not configured: the budget guard uses a small placeholder per call, not actual provider spend.'));document.querySelector('#event-dialog p').textContent='This resets only the separate Qwen event, including its sessions and application call guard. Provider charges are not refunded.'}
+    const count=value=>Number(value||0).toLocaleString();
+    const usd=value=>'$'+Number(value||0).toFixed(6);
+    function cents(value){const n=Number(value||0)*100;return n===0?'0¢':n<.01?'<0.01¢':n<1?Number(n.toFixed(3))+'¢':Number(n.toFixed(2))+'¢'}
+    async function refresh(){
+      if(!operatorToken)return;
+      try{
+        const response=await fetch(apiPath('/api/operator/status'),{headers:{'x-operator-token':operatorToken},cache:'no-store'});
+        const data=await response.json();
+        if(!response.ok)throw new Error(data.error||'Unable to load operator status.');
+        const a=data.analytics||{};
+        currentEventNumber=data.eventNumber||1;
+        el('login').classList.add('hidden');el('dashboard').classList.remove('hidden');el('login-error').textContent='';
+        el('updated').textContent='Updated '+new Date().toLocaleTimeString()+' · event started '+new Date(a.startedAt).toLocaleString();
+        el('event-heading').textContent='Event '+(data.eventNumber||1)+' · gameplay';
+        const previous=data.previousEvent;
+        el('previous-event').classList.toggle('hidden',!previous);
+        if(previous)el('previous-event').textContent='Previous event '+previous.eventNumber+' archived '+new Date(previous.endedAt).toLocaleString()+' · '+count(previous.analytics?.uniqueVisitors)+' visitors · '+count(previous.analytics?.playedDuels)+' duels · '+usd(previous.analytics?.knownCostUsd)+' known inference cost.';
+        el('online').textContent=count(data.playersOnline);el('visitors').textContent=count(a.uniqueVisitors);el('unique-players').textContent=count(a.uniquePlayers);el('unique-winners').textContent=count(a.uniqueWinners);
+        el('unique-since').textContent=a.uniqueTrackingStartedAt?new Date(a.uniqueTrackingStartedAt).toLocaleString():'with this update';
+        el('played').textContent=count(a.playedDuels);el('rounds').textContent=count(a.completedRounds);
+        el('wins').textContent=count(a.playerWins);el('losses').textContent=count(a.duckWins)+' / '+count(a.draws);
+        el('win-rate').textContent=a.finishedDuels?((a.playerWins/a.finishedDuels)*100).toFixed(1)+'%':'—';
+        el('sessions').textContent=count(data.storedSessions);el('active-sessions').textContent=count(data.storedPlayedSessions);
+        el('finished').textContent=count(a.finishedDuels);el('model').textContent=data.model||'—';
+        el('cost').textContent=trial?'—':cents(a.knownCostUsd);el('cost-usd').textContent=trial?'Tenstorrent pricing not configured':usd(a.knownCostUsd)+' estimated';
+        el('calls').textContent=count(a.requests);el('call-kinds').textContent=count(a.duckChoices)+' duck · '+count(a.refereeCalls)+' referee';
+        el('total-tokens').textContent=count((a.promptTokens||0)+(a.completionTokens||0));
+        el('tokens').textContent=count(a.promptTokens)+' / '+count(a.completionTokens);el('cached').textContent=count(a.cacheReadTokens);
+        el('response').textContent=a.timedCalls?(a.responseTimeMs/a.timedCalls/1000).toFixed(2)+'s':'—';
+        el('in-flight').textContent=count(data.activeCalls);el('failures').textContent=count(a.failedRequests);el('malformed').textContent=count(a.malformedResponses);el('unknown').textContent=count(a.unknownUsage);
+        el('guard-spent').textContent=usd(data.budget?.spent);el('guard-limit').textContent=data.budgetLimitUsd==null?'—':usd(data.budgetLimitUsd);
+      }catch(error){el('login-error').textContent=error.message;el('login').classList.remove('hidden');el('dashboard').classList.add('hidden');}
+    }
+    el('login').addEventListener('submit',event=>{event.preventDefault();operatorToken=el('token').value;el('token').value='';refresh()});
+    el('refresh').addEventListener('click',refresh);
+    function showClaim(claim){
+      const outcome=claim.outcome==='player'?'win':'10-round survivor';
+      const earned=new Date(claim.earnedAt||claim.wonAt).toLocaleString();
+      const status=claim.redeemedAt?'ALREADY REDEEMED '+new Date(claim.redeemedAt).toLocaleString():'NOT YET REDEEMED';
+      el('claim-result').textContent='Verified '+outcome+' · event '+claim.eventNumber+' · '+claim.rounds+' rounds · earned '+earned+' · '+status;
+      el('claim-result').dataset.redeemed=String(Boolean(claim.redeemedAt));
+      verifiedClaimReference=claim.redeemedAt?'':claim.reference;
+      el('redeem-claim').hidden=Boolean(claim.redeemedAt);
+    }
+    el('claim-reference').addEventListener('input',()=>{verifiedClaimReference='';el('redeem-claim').hidden=true;el('claim-result').textContent='';delete el('claim-result').dataset.redeemed});
+    el('claim-form').addEventListener('submit',async event=>{
+      event.preventDefault();
+      const reference=el('claim-reference').value.trim();
+      verifiedClaimReference='';el('redeem-claim').hidden=true;delete el('claim-result').dataset.redeemed;
+      el('claim-result').textContent='Checking…';
+      try{
+        const response=await fetch(apiPath('/api/operator/claim?reference='+encodeURIComponent(reference)),{headers:{'x-operator-token':operatorToken},cache:'no-store'});
+        const data=await response.json();
+        if(el('claim-reference').value.trim()!==reference)return;
+        if(response.ok&&data.verified)showClaim(data.claim);
+        else el('claim-result').textContent=data.error||'No matching claim.';
+      }catch{el('claim-result').textContent='Could not check this reference. Try again.'}
+    });
+    el('redeem-claim').addEventListener('click',async()=>{
+      const reference=verifiedClaimReference;
+      if(!reference||!window.confirm('Mark this claim as redeemed? Do this only after you have sent the reward.'))return;
+      el('redeem-claim').disabled=true;
+      try{
+        const response=await fetch(apiPath('/api/operator/claim/redeem'),{method:'POST',headers:{'content-type':'application/json','x-operator-token':operatorToken},body:JSON.stringify({reference}),cache:'no-store'});
+        const data=await response.json();
+        if(data.verified&&data.claim?.redeemedAt)showClaim(data.claim);
+        else el('claim-result').textContent=data.error||'Could not mark this claim redeemed.';
+      }catch{el('claim-result').textContent='Could not mark this claim redeemed. Verify it again before retrying.'}
+      finally{el('redeem-claim').disabled=false}
+    });
+    el('new-event').addEventListener('click',()=>{el('event-confirmation').value='';el('event-error').textContent='';el('event-dialog').showModal();el('event-confirmation').focus()});
+    el('event-cancel').addEventListener('click',()=>el('event-dialog').close());
+    el('event-form').addEventListener('submit',async event=>{
+      event.preventDefault();
+      if(el('event-confirmation').value.trim()!=='NEW EVENT'){el('event-error').textContent='Type NEW EVENT exactly.';return}
+      el('event-submit').disabled=true;el('event-error').textContent='';
+      try{
+        const response=await fetch(apiPath('/api/operator/new-event'),{method:'POST',headers:{'Content-Type':'application/json','x-operator-token':operatorToken},body:JSON.stringify({confirm:'NEW EVENT',expectedEventNumber:currentEventNumber}),cache:'no-store'});
+        const data=await response.json();
+        if(!response.ok)throw new Error(data.error||'Unable to start a new event.');
+        el('event-dialog').close();await refresh();
+      }catch(error){el('event-error').textContent=error.message}
+      finally{el('event-submit').disabled=false}
+    });
+    setInterval(()=>{if(document.visibilityState==='visible')refresh()},15000);
+  </script>
+</body>
+</html>

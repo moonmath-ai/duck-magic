@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fffaf0">
+  <title>Duck Magic — Powered by Zro</title>
+  <meta name="description" content="The duck casts first. Invent a spell that actually stops it—and maybe sends it back.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Duck Magic · Can you beat the Duck Wizard?">
+  <meta property="og:description" content="The duck casts. You invent the counterspell. Survive the duel—or knock the duck out. Powered by Zro inference.">
+  <meta property="og:image" content="https://duck-magic.otsar.workers.dev/share-card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/png" href="/duck-wizard-favicon.png?v=1">
+  <link rel="stylesheet" href="/styles.css?v=repeat-1">
+  <script type="module" src="/app.js?v=qwen-copy-1"></script>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <a class="brand" href="https://zro.moonmath.ai/" target="_blank" rel="noopener noreferrer" aria-label="Zro home"><img class="brand-mark" src="/zro-mark-black.svg" alt=""><span class="brand-tag">MADE USING ZRO<br>POWERED BY ZRO</span></a>
+      <div class="top-actions"><span id="online-count" class="online-count" hidden aria-live="polite"></span><span id="mode" class="mode">CONNECTING…</span><button id="how-to-play" class="top-link" type="button" aria-haspopup="dialog" aria-controls="intro-overlay"><span class="play-text">How to play</span><span class="play-icon" aria-hidden="true">?</span></button><a class="top-link about-zro" href="https://zro.moonmath.ai/" target="_blank" rel="noopener noreferrer">About Zro</a><a class="top-link fork-link" href="https://github.com/moonmath-ai/duck-magic/fork" target="_blank" rel="noopener noreferrer">Fork this game ↗</a></div>
+    </header>
+
+    <main class="layout">
+      <section class="game-column" aria-label="Spell duel arena">
+        <div class="game-heading"><div><span class="eyebrow">DUCK MAGIC / THE BATTLE</span><h1>The duck casts. <em>You answer.</em></h1></div><div class="heading-actions"><span id="round" class="round-tag">ROUND 1</span><button id="new-game" class="plain-btn" type="button" aria-label="Start a new duel">↻ <span>New duel</span></button></div></div>
+        <div id="arena" class="arena" aria-label="Duck spell duel battle scene">
+          <div class="arena-sky"><span class="sun"></span><span class="cloud cloud-one"></span><span class="cloud cloud-two"></span></div>
+          <div class="combatants">
+            <div class="combatant duck-stats"><div class="combatant-heading"><strong>DUCK WIZARD</strong><span id="duck-hp-text">24 / 24 HP</span></div><div class="meter hp"><span id="duck-hp-fill"></span></div></div>
+            <div class="combatant player-stats"><div class="combatant-heading"><strong>YOU</strong><span id="player-hp-text">30 / 30 HP</span></div><div class="meter hp"><span id="player-hp-fill"></span></div><div class="combatant-heading magic-heading"><strong>MAGIC</strong><span id="player-mp-text">10 / 10</span></div><div class="meter magic"><span id="player-mp-fill"></span></div></div>
+          </div>
+          <div class="platform platform-player"></div><div class="platform platform-duck"></div>
+          <div id="player-avatar" class="avatar player-avatar" data-pose="idle" role="img" aria-label="Your pixel wizard"><div class="player-sprite" aria-hidden="true"></div></div>
+          <div id="duck-avatar" class="avatar duck-avatar" data-pose="idle" role="img" aria-label="Duck wizard standing ready"><div class="duck-sprite" aria-hidden="true"></div></div>
+          <div class="speech-stack"><div id="duck-line" class="duck-line" aria-live="polite"><strong id="duck-spell-name">The duck is choosing a spell…</strong><span id="duck-spell-facts">It will tell you what is coming before you answer.</span><button id="retry-attack" class="plain-btn" type="button" hidden>Retry spell</button></div>
+          <div id="player-line" class="player-line" hidden></div></div>
+          <div id="duck-damage" class="damage-pop duck-damage" aria-hidden="true"></div>
+          <div id="player-damage" class="damage-pop player-damage" aria-hidden="true"></div>
+          <div class="arena-floor"></div>
+        </div>
+        <section class="battle-feed" aria-label="Battle play-by-play"><div class="feed-heading"><div><span class="eyebrow">THE DUEL</span><h2>What happened</h2></div><span id="feed-state">AWAITING YOUR COUNTER</span></div><div id="feed-entries" class="feed-entries" role="log" aria-live="polite" aria-relevant="additions text"><p class="feed-empty">Cast a counterspell. The outcome will unfold here.</p></div></section>
+        <div class="mobile-metrics"><span id="mobile-call-count">0 model calls</span><span id="mobile-cost">— estimated</span><button id="metrics-open" type="button" aria-haspopup="dialog" aria-controls="metrics-overlay">Metrics ↗</button></div>
+        <form id="spell-form" class="spell-form">
+          <label for="spell-input">YOUR COUNTERSPELL <span id="form-target"></span></label>
+          <div class="spell-entry"><textarea id="spell-input" rows="2" maxlength="180" aria-describedby="spell-enter-hint" required></textarea><div class="spell-actions"><button id="check-magic" type="button">Check</button><button id="cast-btn" type="submit">COUNTER <span>✦</span></button></div></div>
+          <p id="magic-preview" class="magic-preview" role="status" aria-live="polite" hidden></p>
+          <span id="spell-enter-hint" class="spell-enter-hint">Enter to counter · Shift+Enter for a new line</span>
+        </form>
+        <section id="result-card" class="result-card" aria-live="polite" hidden>
+          <div class="result-copy"><span class="eyebrow">DUEL COMPLETE · POWERED BY ZRO</span><h2 id="result-title">The duel is over.</h2><p id="result-summary"></p><p id="result-metrics"></p></div>
+          <div id="reward-claim" class="reward-claim" hidden><span id="claim-eyebrow" class="eyebrow">YOU SOLVED IT · CLAIM YOUR WIN</span><p>Copy your note and email it to us. We’ll reply with your personal reward.</p><div class="claim-steps"><span>1 · Copy</span><span>2 · Email us</span><span>3 · We reply</span></div><div class="claim-note"><p id="claim-text"></p><button id="copy-claim" type="button">Copy note</button></div><div class="claim-email"><a id="email-claim" href="#">Send us an email ↗</a><span id="claim-email-address"></span></div></div>
+          <div class="result-actions"><button id="share-result" class="result-share" type="button">Copy result</button><button id="play-again" class="result-replay" type="button">Play again</button></div>
+          <p class="result-links"><button id="copy-result" type="button">Copy game link</button><span aria-hidden="true">·</span><a id="share-x" href="#" target="_blank" rel="noopener noreferrer">Post to X ↗</a><span aria-hidden="true">·</span><a href="https://zro.moonmath.ai/" target="_blank" rel="noopener noreferrer">Build with Zro ↗</a></p>
+        </section>
+      </section>
+      <aside class="sidebar" aria-label="Battle information">
+        <section class="metrics-card"><div class="card-heading"><span class="eyebrow">YOU · POWERED BY ZRO</span><span id="call-count">0 CALLS</span></div><div class="cost-line"><strong id="cost-cents">—</strong><span>estimated inference this duel<small id="cost-usd">—</small></span></div><div class="latest-heading">Your latest attempt <span>DUCK + REFEREE + RETRIES</span></div><div class="metric-grid"><div><strong id="latency">—</strong><span title="Average full response time across timed duck-choice, referee, and retry calls. TTFT is not measured.">AVG MODEL RESPONSE</span></div><div><strong id="speed">—</strong><span title="Output tokens across timed duck-choice, referee, and retry calls divided by their combined response time.">EFFECTIVE OUTPUT</span></div><div><strong id="turn-time">—</strong><span title="All timed model call durations for this attempt added together; excludes network and animation.">MODEL TURN TIME</span></div><div><strong id="tokens">—</strong><span title="Output tokens across all duck-choice, referee, and retry calls for your latest attempt.">OUTPUT TOKENS</span></div></div><p id="mode-note">Connecting to local duel…</p><p id="cost-note" class="cost-note">Duck choice, referee, and retries counted. Inference only; excludes hosting.</p></section>
+      </aside>
+    </main>
+    <footer class="footer"><span>MADE USING ZRO · <a href="https://zro.moonmath.ai/" target="_blank" rel="noopener noreferrer">BUILD WITH ZRO ↗</a> · <a href="https://github.com/moonmath-ai/duck-magic/fork" target="_blank" rel="noopener noreferrer">FORK THIS GAME ↗</a></span><span>NO ACCOUNTS · YOUR COUNTERSPELLS AREN’T PUBLIC</span></footer>
+  </div>
+  <div id="intro-overlay" class="intro-overlay" hidden>
+    <section class="intro-card" role="dialog" aria-modal="true" aria-labelledby="intro-title" aria-describedby="intro-lede">
+      <div class="intro-top"><span class="eyebrow">HOW TO PLAY · DUCK MAGIC</span><button id="intro-close" type="button" aria-label="Close how to play">×</button></div>
+      <h2 id="intro-title">Survive the duck.</h2>
+      <p id="intro-lede">The duck casts first. Outsmart its spells and knock it out before you run out of health.</p>
+      <ol class="intro-steps">
+        <li><span>01</span><div><strong>Read its spell.</strong><p>The duck tells you what's coming. An unblocked attack costs you 10 HP.</p></div></li>
+        <li><span>02</span><div><strong>Invent a defense.</strong><p>Write what you do <em>and why it works</em>. A clever reversal can hurt the duck.</p></div></li>
+        <li><span>03</span><div><strong>Watch your magic.</strong><p>Spells use magic. You recover 2 magic after each turn, but HP doesn't refill. The duck notices repeated tactics and may evade the return path.</p></div></li>
+      </ol>
+      <button id="intro-start" class="intro-start" type="button">Got it. Let's duel →</button>
+      <p class="intro-fork"><a href="https://github.com/moonmath-ai/duck-magic/fork" target="_blank" rel="noopener noreferrer">Want to build your own version? Fork the game ↗</a></p>
+    </section>
+  </div>
+  <div id="metrics-overlay" class="metrics-overlay" hidden>
+    <section class="metrics-panel" role="dialog" aria-modal="true" aria-labelledby="metrics-title">
+      <div class="metrics-panel-head"><div><span class="eyebrow">POWERED BY ZRO</span><h2 id="metrics-title">Your inference metrics</h2></div><button id="metrics-close" type="button" aria-label="Close metrics">×</button></div>
+      <div class="metrics-panel-cost"><strong id="metrics-cost-cents">—</strong><span>estimated inference this duel<small id="metrics-cost-usd">—</small></span></div>
+      <div class="metrics-panel-grid"><div><span>AVG RESPONSE · LATEST ATTEMPT</span><strong id="metrics-latency">—</strong></div><div><span>OUTPUT SPEED · ALL CALLS</span><strong id="metrics-speed">—</strong></div><div><span>MODEL TIME · LATEST ATTEMPT</span><strong id="metrics-turn-time">—</strong></div><div><span>OUTPUT TOKENS · LATEST ATTEMPT</span><strong id="metrics-tokens">—</strong></div><div><span>MODEL CALLS THIS DUEL</span><strong id="metrics-call-count">0</strong></div><div><span>CACHE READ THIS DUEL</span><strong id="metrics-cache">—</strong></div></div>
+      <p id="metrics-mode-note">Duck choices and referee decisions use Zro.</p>
+      <p id="metrics-cost-note">Duck choice, referee, and retries are counted. Estimates use reported tokens and the model’s listed rates; hosting is not included. Speed uses full non-streaming response time, not time to first token.</p>
+      <p>These are your duel’s metrics only. Your counterspells are not shown to other players.</p>
+      <p><a class="zro-link" href="https://zro.moonmath.ai/" target="_blank" rel="noopener noreferrer">Build with Zro ↗</a></p>
+    </section>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
